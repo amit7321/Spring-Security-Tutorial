@@ -34,6 +34,8 @@ public class AppSecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/", "index", "/css/*", "/js/*")
                 .permitAll()
+                .antMatchers("/api/**")
+                .hasRole(student.name())
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -55,6 +57,12 @@ public class AppSecurityConfig {
                 .username("Smith")
                 .password(passwordEncoder.encode("admin"))
                 .roles(admin.name())
+                .build();
+
+        UserDetails adminTrainee = User.builder()
+                .username("Akash")
+                .password(passwordEncoder.encode("admin"))
+                .roles(AppUserRole.adminTrainee.name())
                 .build();
 
         return new InMemoryUserDetailsManager(userStudent, userAdmin);
