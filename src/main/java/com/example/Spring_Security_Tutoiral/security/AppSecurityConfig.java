@@ -31,6 +31,7 @@ public class AppSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception
     {
         http
+                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/", "index", "/css/*", "/js/*")
                 .permitAll()
@@ -49,23 +50,23 @@ public class AppSecurityConfig {
     {
         UserDetails userStudent = User.builder()
                 .username("amit")
-                .password(passwordEncoder.encode("12345"))
+                .password(passwordEncoder.encode("123"))
                 .roles(student.name())
                 .build();
 
         UserDetails userAdmin = User.builder()
-                .username("Smith")
-                .password(passwordEncoder.encode("admin"))
+                .username("smith")
+                .password(passwordEncoder.encode("123"))
                 .roles(admin.name())
                 .build();
 
         UserDetails adminTrainee = User.builder()
-                .username("Akash")
-                .password(passwordEncoder.encode("admin"))
+                .username("akash")
+                .password(passwordEncoder.encode("123"))
                 .roles(AppUserRole.adminTrainee.name())
                 .build();
 
-        return new InMemoryUserDetailsManager(userStudent, userAdmin);
+        return new InMemoryUserDetailsManager(userStudent, userAdmin, adminTrainee);
     }
 
 }
