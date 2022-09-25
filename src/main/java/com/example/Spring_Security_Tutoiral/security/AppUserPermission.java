@@ -7,12 +7,12 @@ public enum AppUserPermission {
     course_write("course:write");
 
     private final String permission;
-
+ 
     AppUserPermission(String permission) {
         this.permission = permission;
     }
 
-    public String getPermission() {
+    public String getPermission()  {
         return permission;
     }
 }
