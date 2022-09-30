@@ -49,14 +49,14 @@ public class AppSecurityConfig {
     protected UserDetailsService userDetailsService()
     {
         UserDetails userStudent = User.builder()
-                .username("anna")
-                .password(passwordEncoder.encode("123"))
+                .username("annasmith")
+                .password(passwordEncoder.encode("password"))
                 .roles(student.name())
                 .build();
 
         UserDetails userAdmin = User.builder()
                 .username("linda")
-                .password(passwordEncoder.encode("123"))
+                .password(passwordEncoder.encode("password123"))
                 .roles(admin.name())
                 .build();
 
