@@ -49,19 +49,19 @@ public class AppSecurityConfig {
     protected UserDetailsService userDetailsService()
     {
         UserDetails userStudent = User.builder()
-                .username("amit")
+                .username("anna")
                 .password(passwordEncoder.encode("123"))
                 .roles(student.name())
                 .build();
 
         UserDetails userAdmin = User.builder()
-                .username("smith")
+                .username("linda")
                 .password(passwordEncoder.encode("123"))
                 .roles(admin.name())
                 .build();
 
         UserDetails adminTrainee = User.builder()
-                .username("akash")
+                .username("tom")
                 .password(passwordEncoder.encode("123"))
                 .roles(AppUserRole.adminTrainee.name())
                 .build();
