@@ -45,7 +45,8 @@ public class AppSecurityConfig {
                 .authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login").permitAll();
+                .loginPage("/login").permitAll()
+                .defaultSuccessUrl("/courses", true);
 
         return http.build();
     }
