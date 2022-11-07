@@ -1,6 +1,5 @@
 package com.example.Spring_Security_Tutoiral.auth;
 
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,7 +10,8 @@ public class ApplicationUserService implements UserDetailsService {
 
     private final ApplicationUserDao applicationUserDao ;
 
-    public ApplicationUserService(ApplicationUserDao applicationUserDao) {
+    public ApplicationUserService(ApplicationUserDao applicationUserDao)
+    {
         this.applicationUserDao = applicationUserDao;
     }
 
