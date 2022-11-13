@@ -1,25 +1,20 @@
 package com.example.Spring_Security_Tutoiral.security;
 
+import com.example.Spring_Security_Tutoiral.auth.ApplicationUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.concurrent.TimeUnit;
-
-import static com.example.Spring_Security_Tutoiral.security.AppUserPermission.course_write;
-import static com.example.Spring_Security_Tutoiral.security.AppUserRole.*;
 
 @Configuration
 @EnableWebSecurity
@@ -27,10 +22,12 @@ import static com.example.Spring_Security_Tutoiral.security.AppUserRole.*;
 public class AppSecurityConfig {
 
     private final PasswordEncoder passwordEncoder;
+    private final ApplicationUserService applicationUserService;
 
     @Autowired
-    public AppSecurityConfig(PasswordEncoder passwordEncoder) {
+    public AppSecurityConfig(PasswordEncoder passwordEncoder, ApplicationUserService applicationUserService) {
         this.passwordEncoder = passwordEncoder;
+        this.applicationUserService = applicationUserService;
     }
 
 
@@ -69,31 +66,20 @@ public class AppSecurityConfig {
         return http.build();
     }
 
-    @Bean
-    protected UserDetailsService userDetailsService()
+
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception
     {
-        UserDetails userStudent = User.builder()
-                .username("annasmith")
-                .password(passwordEncoder.encode("password"))
-                /*.roles(student.name())*/
-                .authorities(student.getGrantedAuthorities())
-                .build();
+        auth.authenticationProvider(daoAuthenticationProvider());
+    }
 
-        UserDetails userAdmin = User.builder()
-                .username("linda")
-                .password(passwordEncoder.encode("password123"))
-                //.roles(admin.name())
-                .authorities(admin.getGrantedAuthorities())
-                .build();
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider()
+    {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(passwordEncoder);
+        provider.setUserDetailsService(applicationUserService);
 
-        UserDetails adminTrainee = User.builder()
-                .username("tom")
-                .password(passwordEncoder.encode("123"))
-                //.roles(AppUserRole.adminTrainee.name())
-                .authorities(AppUserRole.adminTrainee.getGrantedAuthorities())
-                .build();
-
-         return new InMemoryUserDetailsManager(userStudent, userAdmin, adminTrainee);
+        return provider;
     }
 
 }
